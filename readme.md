@@ -1,6 +1,6 @@
 ## Laravel 5 Simple Route Access Control
 
-Related to my blog article here:
+Related to my blog article here: http://josephralph.co.uk/laravel-5-simple-route-access-control/
 
 
 Folders and files to note are as follows:
