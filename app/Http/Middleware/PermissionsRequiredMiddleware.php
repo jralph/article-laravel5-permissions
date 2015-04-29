@@ -34,34 +34,25 @@ class PermissionsRequiredMiddleware {
 		}
 
 		// Fetch all of the users permissions.
-		$userPermissions = array_fetch($user->permissions->toArray(), 'slug');
+		$userPermissions = array_fetch($user->permissions()->whereIn('slug', (array) $permissions)->get()->toArray(), 'slug');
 
 		// Ensure that the required permissions are an array.
 		$permissions = (array) $permissions;
 
-		// Sort both permission arrays for easy comparison.
-		sort($permissions);
-		sort($userPermissions);
-
-		// Check if we require all permissons or just one.
 		if (isset($actions['permissions_require_all']))
 		{
 			// If the user has EVERY permission required.
-			if ($userPermissions == $permissions) {
+			if (count($permissions) == count($userPermissions))
+			{
 				// Allow the request.
 				return $next($request);
 			}
 		} else {
-			// Loop through each permission to check.
-			foreach ($permissions as $permission)
-	        {
-	        	// If the user has the permission.
-	            if (in_array($permission, $userPermissions))
-	            {
-	            	// Allow access and ignore any remaining permissions.
-	                return $next($request);
-	            }
-	        }
+			if (count($permissions) > 0)
+			{
+				// Allow the request.
+				return $next($request);
+			}
 		}
 
 		// Abort the request if we reach here.
