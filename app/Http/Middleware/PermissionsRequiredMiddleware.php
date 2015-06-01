@@ -48,7 +48,7 @@ class PermissionsRequiredMiddleware {
 				return $next($request);
 			}
 		} else {
-			if (count($permissions) > 0)
+			if (count($userPermissions) > 0)
 			{
 				// Allow the request.
 				return $next($request);
